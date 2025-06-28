@@ -1,9 +1,16 @@
-import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
+import {
+  MemoryRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+} from 'react-router-dom';
 import icon from '../../assets/icon.svg';
 import './App.css';
 import InstallPackage from './pages/InstallPackage';
 
 function Hello() {
+  const navigate = useNavigate(); // 👈 Hook for programmatic navigation
+
   return (
     <div>
       <div className="Hello">
@@ -35,6 +42,16 @@ function Hello() {
             Donate
           </button>
         </a>
+      </div>
+
+      {/* 👇 Add this button to navigate to InstallPackage */}
+      <div className="Hello" style={{ marginTop: 20 }}>
+        <button type="button" onClick={() => navigate('/install-package')}>
+          <span role="img" aria-label="package">
+            📦
+          </span>
+          Install Crawlee
+        </button>
       </div>
     </div>
   );

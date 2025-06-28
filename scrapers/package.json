@@ -1,0 +1,12 @@
+{
+  "name": "scrapers",
+  "version": "1.0.0",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "crawlee": "^3.13.9"
+  }
+}

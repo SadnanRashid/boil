@@ -9,6 +9,7 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
+import { exec } from 'child_process';
 import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
@@ -135,3 +136,35 @@ app
     });
   })
   .catch(console.log);
+
+ipcMain.handle('install-crawlee', async () => {
+  const scraperPath = path.join(__dirname, '../../scrapers');
+  const win = BrowserWindow.getAllWindows()[0]; // send events to renderer
+
+  const packages = ['crawlee', 'cheerio', 'puppeteer'];
+  let installed = 0;
+
+  for (const pkg of packages) {
+    try {
+      await new Promise((resolve, reject) => {
+        exec(
+          `npm install ${pkg}`,
+          { cwd: scraperPath },
+          (err, stdout, stderr) => {
+            if (err) return reject(stderr || err.message);
+            installed++;
+            win.webContents.send('install-progress', {
+              package: pkg,
+              progress: Math.round((installed / packages.length) * 100),
+            });
+            resolve(true);
+          },
+        );
+      });
+    } catch (err) {
+      return { success: false, error: err };
+    }
+  }
+
+  return { success: true };
+});
