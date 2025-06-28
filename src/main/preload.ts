@@ -25,8 +25,12 @@ const electronHandler = {
 };
 
 contextBridge.exposeInMainWorld('electron', electronHandler);
+
 contextBridge.exposeInMainWorld('electronAPI', {
   installCrawlee: () => ipcRenderer.invoke('install-crawlee'),
+  onInstallProgress: (
+    callback: (data: { package: string; progress: number }) => void,
+  ) => ipcRenderer.on('install-progress', (_, data) => callback(data)),
 });
 
 export type ElectronHandler = typeof electronHandler;
