@@ -7,6 +7,7 @@ import {
 import icon from '../../assets/icon.svg';
 import './App.css';
 import InstallPackage from './pages/InstallPackage';
+import ExampleScraper from './pages/ExampleScraper';
 
 function Hello() {
   const navigate = useNavigate(); // 👈 Hook for programmatic navigation
@@ -53,6 +54,15 @@ function Hello() {
           Install Crawlee
         </button>
       </div>
+
+      <div className="Hello" style={{ marginTop: 20 }}>
+        <button type="button" onClick={() => navigate('/example-scraper')}>
+          <span role="img" aria-label="package">
+            📦
+          </span>
+          Run Example
+        </button>
+      </div>
     </div>
   );
 }
@@ -63,6 +73,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Hello />} />
         <Route path="/install-package" element={<InstallPackage />} />
+        <Route path="/example-scraper" element={<ExampleScraper />} />
       </Routes>
     </Router>
   );

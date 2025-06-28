@@ -31,6 +31,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
   onInstallProgress: (
     callback: (data: { package: string; progress: number }) => void,
   ) => ipcRenderer.on('install-progress', (_, data) => callback(data)),
+  runScraper: (scraperName: string) =>
+    ipcRenderer.invoke('run-scraper', scraperName),
+  readDataset: () => ipcRenderer.invoke('read-dataset'),
 });
 
 export type ElectronHandler = typeof electronHandler;

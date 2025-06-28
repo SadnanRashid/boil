@@ -9,12 +9,13 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { exec } from 'child_process';
+import { exec, spawn } from 'child_process';
 import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+import fs from 'fs';
 
 class AppUpdater {
   constructor() {
@@ -167,4 +168,43 @@ ipcMain.handle('install-crawlee', async () => {
   }
 
   return { success: true };
+});
+
+ipcMain.handle('run-scraper', async (_, scraperName: string) => {
+  const scraperPath = path.join(
+    __dirname,
+    `../../scrapers/${scraperName}/index.js`,
+  );
+
+  if (!fs.existsSync(scraperPath)) {
+    return { success: false, error: 'Scraper not found' };
+  }
+
+  return new Promise((resolve) => {
+    const child = spawn('node', [scraperPath], {
+      cwd: path.dirname(scraperPath),
+      shell: true,
+    });
+
+    child.stdout.on('data', (data) => console.log(data.toString()));
+    child.stderr.on('data', (data) => console.error(data.toString()));
+    child.on('close', (code) => resolve({ success: code === 0 }));
+  });
+});
+
+// Generic dataset reader
+ipcMain.handle('read-dataset', async () => {
+  const datasetPath = path.join(__dirname, '../../storage/datasets/default');
+  try {
+    const files = fs
+      .readdirSync(datasetPath)
+      .filter((f) => f.endsWith('.json'));
+    const data = files.flatMap((file) => {
+      const content = fs.readFileSync(path.join(datasetPath, file), 'utf-8');
+      return JSON.parse(content);
+    });
+    return { success: true, data };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
 });
