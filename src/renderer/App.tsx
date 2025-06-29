@@ -8,12 +8,16 @@ import icon from '../../assets/icon.svg';
 import './App.css';
 import InstallPackage from './pages/InstallPackage';
 import ScraperRunner from './pages/ScraperRunner';
+import './styles/tailwind.css';
 
 function Hello() {
   const navigate = useNavigate(); // 👈 Hook for programmatic navigation
 
   return (
     <div>
+      <div className="bg-green-600 text-dark text-3xl p-10">
+        ✅ Tailwind is working with Electron React Boilerplate!
+      </div>
       <div className="Hello">
         <img width="200" alt="icon" src={icon} />
       </div>
