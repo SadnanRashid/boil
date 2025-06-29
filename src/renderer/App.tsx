@@ -7,7 +7,7 @@ import {
 import icon from '../../assets/icon.svg';
 import './App.css';
 import InstallPackage from './pages/InstallPackage';
-import ExampleScraper from './pages/ExampleScraper';
+import ScraperRunner from './pages/ScraperRunner';
 
 function Hello() {
   const navigate = useNavigate(); // 👈 Hook for programmatic navigation
@@ -56,7 +56,7 @@ function Hello() {
       </div>
 
       <div className="Hello" style={{ marginTop: 20 }}>
-        <button type="button" onClick={() => navigate('/example-scraper')}>
+        <button type="button" onClick={() => navigate('/scraper-runner')}>
           <span role="img" aria-label="package">
             📦
           </span>
@@ -73,7 +73,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Hello />} />
         <Route path="/install-package" element={<InstallPackage />} />
-        <Route path="/example-scraper" element={<ExampleScraper />} />
+        <Route path="/scraper-runner" element={<ScraperRunner />} />
       </Routes>
     </Router>
   );

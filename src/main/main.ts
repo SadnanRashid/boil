@@ -193,7 +193,7 @@ ipcMain.handle('run-scraper', async (_, scraperName: string) => {
 });
 
 // Generic dataset reader
-ipcMain.handle('read-dataset', async () => {
+ipcMain.handle('read-dataset', async (folder: any) => {
   const datasetPath = path.join(__dirname, '../../storage/datasets/default');
   try {
     const files = fs

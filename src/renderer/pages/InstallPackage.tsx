@@ -8,7 +8,7 @@ declare global {
         cb: (data: { package: string; progress: number }) => void,
       ) => void;
     };
-    runExampleScraper: () => Promise<{ success: boolean }>;
+    runScraper: () => Promise<{ success: boolean }>;
   }
 }
 
